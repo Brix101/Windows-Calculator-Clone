@@ -2,32 +2,36 @@ package com.brix.windowscalculatorclone
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
-    lateinit var btnPlusMinus: Button
-    lateinit var btnZero: Button
-    lateinit var btnDot: Button
-    lateinit var btnEquals: Button
-    lateinit var btnOne: Button
-    lateinit var btnTwo: Button
-    lateinit var btnThree: Button
-    lateinit var btnPlus: Button
-    lateinit var btnFour: Button
-    lateinit var btnFive: Button
-    lateinit var btnSix: Button
-    lateinit var btnMinus: Button
-    lateinit var btnSeven: Button
-    lateinit var btnEight: Button
-    lateinit var btnNine: Button
-    lateinit var btnMultiply: Button
-    lateinit var btnClearEntry: Button
-    lateinit var btnClear: Button
-    lateinit var btnBackSpace: Button
-    lateinit var btnDivide: Button
+    private lateinit var btnPlusMinus: Button
+    private lateinit var btnZero: Button
+    private lateinit var btnDot: Button
+    private lateinit var btnEquals: Button
+    private lateinit var btnOne: Button
+    private lateinit var btnTwo: Button
+    private lateinit var btnThree: Button
+    private lateinit var btnPlus: Button
+    private lateinit var btnFour: Button
+    private lateinit var btnFive: Button
+    private lateinit var btnSix: Button
+    private lateinit var btnMinus: Button
+    private lateinit var btnSeven: Button
+    private lateinit var btnEight: Button
+    private lateinit var btnNine: Button
+    private lateinit var btnMultiply: Button
+    private lateinit var btnClearEntry: Button
+    private lateinit var btnClear: Button
+    private lateinit var btnBackSpace: Button
+    private lateinit var btnDivide: Button
+
+    private lateinit var txtInput: TextView
+
+    private var initialText = true
+
 
     private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,9 +59,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btnBackSpace = findViewById(R.id.btnBackSpace)
         btnDivide = findViewById(R.id.btnDivide)
 
+        txtInput = findViewById(R.id.txtInput)
+
         setListener()
     }
-    private  fun setListener(){
+
+    private fun setListener() {
         btnPlusMinus.setOnClickListener(this)
         btnZero.setOnClickListener(this)
         btnDot.setOnClickListener(this)
@@ -81,11 +88,38 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        Toast.makeText(this, (v as Button).text, Toast.LENGTH_SHORT).show()
-//        when(v?.id){
-//            R.id.btnPlusMinus ->{
-//
-//            }
-//        }
+
+        var number = txtInput.text.toString()
+        if(initialText){
+            number = ""
+            initialText =false
+        }
+        if (v != null) {
+            when (v.id) {
+                R.id.btnOne -> number += "1"
+                R.id.btnTwo -> number += "2"
+                R.id.btnThree -> number += "3"
+                R.id.btnFour -> number += "4"
+                R.id.btnFive -> number += "5"
+                R.id.btnSix -> number += "6"
+                R.id.btnSeven -> number += "7"
+                R.id.btnEight -> number += "8"
+                R.id.btnNine -> number += "9"
+                R.id.btnZero -> number += "0"
+                R.id.btnPlusMinus -> number = (number.toInt() * -1).toString()
+                R.id.btnDot -> number
+                R.id.btnClearEntry -> {
+                    number = "0"
+                    initialText = true
+                }
+                R.id.btnClear -> {
+                    number = "0"
+                    initialText = true
+                }
+                R.id.btnBackSpace -> number = number.dropLast(1)
+            }
+            txtInput.text = number
+        }
     }
+
 }
