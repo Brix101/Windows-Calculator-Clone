@@ -2,10 +2,12 @@ package com.brix.windowscalculatorclone
 
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.text.method.Touch
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -18,9 +20,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         txtInput = findViewById(R.id.txtInput)
-        txtInput.movementMethod = ScrollingMovementMethod()
+        txtInput.text = "0"
     }
+
 
     fun onNumberClick(view: View?) {
         if (initialText) {
@@ -52,8 +56,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onEqualsClick(view: View) {}
-    fun onPlusMinusClick(view: android.view.View) {
-
+    fun onPlusMinusClick(view: View) {
+        isDecimal = txtInput.text.toString().contains(".")
+        if(isDecimal){
+            txtInput.text = (txtInput.text.toString().toDouble()*-1).toString()
+        }else{
+            txtInput.text = (txtInput.text.toString().toInt()*-1).toString()
+        }
     }
 
     fun onBackSpaceClick(view: View) {
