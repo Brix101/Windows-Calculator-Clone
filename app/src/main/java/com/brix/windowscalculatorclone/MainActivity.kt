@@ -1,13 +1,10 @@
 package com.brix.windowscalculatorclone
 
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
-import android.text.method.Touch
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -41,12 +38,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //TODO update Operation function
     fun onOperatorClick(view: View?) {
         Log.d(TAG, "onOperatorClick: " + (view as Button).text)
     }
 
-
-
+    //TODO update clear all function
     fun onClearClick(view: View) {
         txtInput.text = ""
     }
@@ -55,13 +52,15 @@ class MainActivity : AppCompatActivity() {
         txtInput.text = ""
     }
 
+    //TODO add equals function
     fun onEqualsClick(view: View) {}
+
     fun onPlusMinusClick(view: View) {
         isDecimal = txtInput.text.toString().contains(".")
-        if(isDecimal){
-            txtInput.text = (txtInput.text.toString().toDouble()*-1).toString()
-        }else{
-            txtInput.text = (txtInput.text.toString().toInt()*-1).toString()
+        if (isDecimal) {
+            txtInput.text = (txtInput.text.toString().toDouble() * -1).toString()
+        } else {
+            txtInput.text = (txtInput.text.toString().toInt() * -1).toString()
         }
     }
 
