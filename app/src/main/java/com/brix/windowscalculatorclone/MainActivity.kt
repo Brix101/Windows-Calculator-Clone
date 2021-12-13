@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
     private lateinit var txtInput: TextView
     private lateinit var txtOperation: TextView
+    private lateinit var txtHistory: TextView
 
     private var isDecimal = false
 
@@ -20,23 +21,33 @@ class MainActivity : AppCompatActivity() {
 
         txtInput = findViewById(R.id.txtInput)
         txtOperation = findViewById(R.id.txtOperation)
+        txtHistory = findViewById(R.id.txtHistory)
         txtInput.text = "0"
     }
 
 
     fun onNumberClick(view: View?) {
         if (view is Button) {
-            isDecimal = txtInput.text.toString().contains(".")
-            if (view.text == ".") {
-                if (!isDecimal) txtInput.append(view.text)
-            } else {
-                txtInput.append(view.text)
-                if (!isDecimal) {
-                    val num = txtInput.text.toString().toIntOrNull()
-                    if (num != null) {
-                        txtInput.text = (num * 1).toString()
+            val txtOp = txtOperation.text.toString()
+            if(txtOp.isEmpty()){
+                isDecimal = txtInput.text.toString().contains(".")
+                if (view.text == ".") {
+                    if (!isDecimal) txtInput.append(view.text)
+                } else {
+                    txtInput.append(view.text)
+                    if (!isDecimal) {
+                        val num = txtInput.text.toString().toIntOrNull()
+                        if (num != null) {
+                            txtInput.text = (num * 1).toString()
+                        }
                     }
                 }
+            }else{
+                val history = " "+txtInput.text.toString()+" "+txtOperation.text.toString()
+                txtHistory.append(history)
+
+                txtInput.text = ""
+                txtOperation.text = ""
             }
         }
     }
@@ -77,6 +88,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onBackSpaceClick(view: View) {
-        txtInput.text = txtInput.text.dropLast(1)
+        val txtOp = txtOperation.text.toString()
+        if(txtOp.isNotEmpty()){
+            txtOperation.text = ""
+        }else{
+            txtInput.text = txtInput.text.dropLast(1)
+        }
     }
+
 }
