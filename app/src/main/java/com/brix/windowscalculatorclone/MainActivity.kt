@@ -9,8 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var txtInput: TextView
+    private lateinit var txtOperation: TextView
 
-    private var initialText = true
     private var isDecimal = false
 
     private val TAG = "MainActivity"
@@ -19,28 +19,34 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         txtInput = findViewById(R.id.txtInput)
+        txtOperation = findViewById(R.id.txtOperation)
         txtInput.text = "0"
     }
 
 
     fun onNumberClick(view: View?) {
-        if (initialText) {
-            txtInput.text = "0"
-            initialText = false
-        }
         if (view is Button) {
             isDecimal = txtInput.text.toString().contains(".")
             if (view.text == ".") {
                 if (!isDecimal) txtInput.append(view.text)
-
-            } else
+            } else {
                 txtInput.append(view.text)
+                if (!isDecimal) {
+                    val num = txtInput.text.toString().toIntOrNull()
+                    if (num != null) {
+                        txtInput.text = (num * 1).toString()
+                    }
+                }
+            }
         }
     }
 
     //TODO update Operation function
     fun onOperatorClick(view: View?) {
-        Log.d(TAG, "onOperatorClick: " + (view as Button).text)
+        if (view != null) {
+            val btn = ((view as Button).text).toString()
+            txtOperation.text = btn
+        }
     }
 
     //TODO update clear all function
@@ -58,9 +64,15 @@ class MainActivity : AppCompatActivity() {
     fun onPlusMinusClick(view: View) {
         isDecimal = txtInput.text.toString().contains(".")
         if (isDecimal) {
-            txtInput.text = (txtInput.text.toString().toDouble() * -1).toString()
+            val doubleNum = txtInput.text.toString().toDoubleOrNull()
+            if (doubleNum != null) {
+                txtInput.text = (doubleNum * -1).toString()
+            }
         } else {
-            txtInput.text = (txtInput.text.toString().toInt() * -1).toString()
+            val intNum = txtInput.text.toString().toIntOrNull()
+            if (intNum != null) {
+                txtInput.text = (intNum * -1).toString()
+            }
         }
     }
 
