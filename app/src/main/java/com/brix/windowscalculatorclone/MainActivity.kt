@@ -42,12 +42,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-            }else{
-                val history = " "+txtInput.text.toString()+" "+txtOperation.text.toString()
-                txtHistory.append(history)
-
-                txtInput.text = ""
-                txtOperation.text = ""
             }
         }
     }
