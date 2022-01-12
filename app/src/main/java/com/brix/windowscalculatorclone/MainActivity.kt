@@ -1,18 +1,21 @@
 package com.brix.windowscalculatorclone
 
 import android.os.Bundle
+import android.text.method.Touch
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import org.mariuszgromada.math.mxparser.Expression
 
 class MainActivity : AppCompatActivity() {
     private lateinit var txtInput: TextView
-    private lateinit var txtOperation: TextView
     private lateinit var txtHistory: TextView
 
     private var isDecimal = false
+    private var isOperated = false
 
     private val TAG = "MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         txtInput = findViewById(R.id.txtInput)
-        txtOperation = findViewById(R.id.txtOperation)
         txtHistory = findViewById(R.id.txtHistory)
         txtInput.text = "0"
     }
@@ -28,8 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     fun onNumberClick(view: View?) {
         if (view is Button) {
-            val txtOp = txtOperation.text.toString()
-            if(txtOp.isEmpty()){
+            if(!isOperated){
                 isDecimal = txtInput.text.toString().contains(".")
                 if (view.text == ".") {
                     if (!isDecimal) txtInput.append(view.text)
@@ -43,11 +44,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }else{
-                val history = " "+txtInput.text.toString()+" "+txtOperation.text.toString()
-                txtHistory.append(history)
-
                 txtInput.text = ""
-                txtOperation.text = ""
+                txtInput.append(view.text)
+                isOperated = false
             }
         }
     }
@@ -55,22 +54,49 @@ class MainActivity : AppCompatActivity() {
     //TODO update Operation function
     fun onOperatorClick(view: View?) {
         if (view != null) {
-            val btn = ((view as Button).text).toString()
-            txtOperation.text = btn
+            val op = ((view as Button).text).toString()
+            val number = txtInput.text.toString()
+//            txtOperation.text = btn
+//            To Set Operation
+            isOperated = true
+            txtHistory.text = number + op
         }
     }
 
-    //TODO update clear all function
     fun onClearClick(view: View) {
         txtInput.text = ""
+        txtHistory.text = ""
     }
 
     fun onClearEntryClick(view: View) {
         txtInput.text = ""
     }
 
+    private fun getInputExpression(): String {
+        txtHistory.append(txtInput.text)
+        var expression = txtHistory.text.replace(Regex("÷"), "/")
+        expression = expression.replace(Regex("×"), "*")
+        return expression
+    }
+
     //TODO add equals function
-    fun onEqualsClick(view: View) {}
+    fun onEqualsClick(view: View) {
+        try {
+            val expression = getInputExpression()
+            val result = Expression(expression).calculate()
+
+            if (result.isNaN()) {
+                // Show Error Message
+                Toast.makeText(applicationContext,"Error",Toast.LENGTH_SHORT).show()
+            } else {
+                // Show Result
+                txtInput.text = result.toString()
+            }
+        } catch (e: Exception) {
+            // Show Error Message
+            Toast.makeText(applicationContext,e.message,Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun onPlusMinusClick(view: View) {
         isDecimal = txtInput.text.toString().contains(".")
@@ -88,12 +114,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onBackSpaceClick(view: View) {
-        val txtOp = txtOperation.text.toString()
-        if(txtOp.isNotEmpty()){
-            txtOperation.text = ""
-        }else{
             txtInput.text = txtInput.text.dropLast(1)
-        }
     }
 
 }

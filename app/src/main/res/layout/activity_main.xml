@@ -26,7 +26,7 @@
                 android:gravity="end"
                 android:textSize="30sp"
                 android:scrollbars="horizontal"
-                android:text="434 x 434 x 434 x 4234 x 2423 x 34343 x 45453 x 454 x 4523454 x5453453 x 4545 3 x 4545 45x  4545 x 4545 x 45 45 x 4545 x 45454 x 454545 x 45454 x 454545 x 454 54 454 x x 4545454"
+                android:text=""
                 android:scrollHorizontally="true"/>
         </LinearLayout>
 
@@ -44,13 +44,6 @@
                 android:textAlignment="textEnd"
                 android:inputType="text"
                 android:textSize="45sp"/>
-            <TextView
-                android:id="@+id/txtOperation"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="30sp"/>
         </LinearLayout>
 
         <LinearLayout
