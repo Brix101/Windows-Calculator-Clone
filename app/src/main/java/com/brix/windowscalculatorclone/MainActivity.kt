@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
             }else{
                 txtInput.text = ""
                 txtInput.append(view.text)
-                txtHistory.append(txtInput.text)
                 isOperated = false
             }
         }
@@ -59,11 +58,11 @@ class MainActivity : AppCompatActivity() {
             val op = ((view as Button).text).toString()
 //            To Set Operation
             isOperated = true
-            if(txtHistory.text.isBlank()){
+//            if(txtHistory.text.isBlank()){
                 txtHistory.append(txtInput.text.toString() + op)
-            }else{
-                txtHistory.append(op)
-            }
+//            }else{
+//                txtHistory.append(op)
+//            }
         }
     }
 
@@ -77,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getInputExpression(): String {
-//        txtHistory.append(txtInput.text)
+        txtHistory.append(txtInput.text)
         var expression = txtHistory.text.replace(Regex("÷"), "/")
         expression = expression.replace(Regex("×"), "*")
         return expression
