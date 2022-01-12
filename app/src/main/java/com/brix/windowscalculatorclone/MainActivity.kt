@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import org.mariuszgromada.math.mxparser.Expression
+import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var txtInput: TextView
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
             }else{
                 txtInput.text = ""
                 txtInput.append(view.text)
+                txtHistory.append(txtInput.text)
                 isOperated = false
             }
         }
@@ -55,11 +57,13 @@ class MainActivity : AppCompatActivity() {
     fun onOperatorClick(view: View?) {
         if (view != null) {
             val op = ((view as Button).text).toString()
-            val number = txtInput.text.toString()
-//            txtOperation.text = btn
 //            To Set Operation
             isOperated = true
-            txtHistory.text = number + op
+            if(txtHistory.text.isBlank()){
+                txtHistory.append(txtInput.text.toString() + op)
+            }else{
+                txtHistory.append(op)
+            }
         }
     }
 
@@ -73,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getInputExpression(): String {
-        txtHistory.append(txtInput.text)
+//        txtHistory.append(txtInput.text)
         var expression = txtHistory.text.replace(Regex("÷"), "/")
         expression = expression.replace(Regex("×"), "*")
         return expression
@@ -90,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext,"Error",Toast.LENGTH_SHORT).show()
             } else {
                 // Show Result
-                txtInput.text = result.toString()
+                txtInput.text = DecimalFormat("0.######").format(result).toString()
             }
         } catch (e: Exception) {
             // Show Error Message
